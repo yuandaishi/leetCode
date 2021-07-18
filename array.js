@@ -6479,5 +6479,267 @@ var countPrimes = function (n) {//数量个数是n
 // 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
 var intersect = function (nums1, nums2) {
+    let len1 = nums1.length;
+    let len2 = nums2.length;
+    let map1 = {};
+    let res = [];
+    for (let i = 0; i < len1; i++) {
+        map1[nums1[i]] ? map1[nums1[i]] += 1 : map1[nums1[i]] = 1;
+    }
+    console.log(map1);
+    for (let i = 0; i < len2; i++) {
+        console.log(map1[nums2[i]])
+        if (map1[nums2[i]] > 0) {
+            res.push(nums2[i]);
+            map1[nums2[i]]--;
+        }
+    }
+    console.log(res)
+    return res;
 
 };
+//intersect([4, 7, 9, 7, 6, 7], [5, 0, 0, 6, 1, 6, 2, 2, 4])
+
+// 给定一个长度为 n 的 非空 整数数组，每次操作将会使 n - 1 个元素增加 1。找出让数组所有元素相等的最小操作次数。
+
+
+
+// 示例：
+
+// 输入：
+// [1, 2, 3]
+// 输出：
+// 3
+// 解释：
+// 只需要3次操作（注意每次操作会增加两个元素的值）：
+// [1, 2, 3]  => [2, 3, 3]  => [3, 4, 3]  => [4, 4, 4]
+
+// 来源：力扣（LeetCode）
+// 链接：https://leetcode-cn.com/problems/minimum-moves-to-equal-array-elements
+// 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+//找出最小的数，然后用其他数减去最小的数的和即为结果
+var minMoves = function (nums) {
+    let min = Math.min(...nums);
+    return nums.reduce((current, value, index) => (current += value - min), 0)
+};
+// console.log(minMoves([1, 5, 7, 100, 99]))
+
+// 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+
+// 注意：答案中不可以包含重复的三元组。
+
+
+
+// 示例 1：
+
+// 输入：nums = [-1, 0, 1, 2, -1, -4]
+// 输出：[[-1, -1, 2], [-1, 0, 1]]
+// 示例 2：
+
+// 输入：nums = []
+// 输出：[]
+// 示例 3：
+
+// 输入：nums = [0]
+// 输出：[]
+
+
+// 提示：
+
+// 0 <= nums.length <= 3000
+//     - 105 <= nums[i] <= 105
+
+// 来源：力扣（LeetCode）
+// 链接：https://leetcode-cn.com/problems/3sum
+// 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+//break 终止当前循环，并执行之后的代码
+//continue continue之后的代码不执行，并继续当前循环
+var threeSum = function (nums) {
+    let len = nums.length;
+    let res = [];
+    if (len < 3) {
+        return []
+    }
+    nums.sort((a, b) => (a - b));
+    // 双指针
+    for (let i = 0; i < len; i++) {
+        let left = i + 1;
+        let right = len - 1;
+        if (nums[i] === nums[i - 1]) {//相等，则跳过
+            continue;
+        }
+        if (nums[i] > 0) {//当前数比0大的时候，直接返回
+            //console.log(res)
+            return res;
+        }
+        while (left < right) {
+            if (nums[i] + nums[left] + nums[right] > 0) {
+                right--;
+            } else if (nums[i] + nums[left] + nums[right] < 0) {
+                left++;
+            } else {//和等于0
+                while (nums[right] === nums[right - 1] && left < right) {//右边的数和下一个数相同
+                    right--;
+                }
+                while (nums[left] === nums[left + 1] && left < right) {//左边的数和下一个数相同
+                    left++;
+                }
+                res.push([nums[i], nums[left], nums[right]]);
+                left++;
+                right--;
+            }
+        }
+    }
+    //console.log(res)
+    return res;
+};
+//console.log(threeSum([-2, 0, 1, 1, 2]))//-4,-1,-1,0,1,2
+
+// 给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+
+// 此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
+
+
+
+// 示例 1：
+
+// 输入：nums = [2, 0, 2, 1, 1, 0]
+// 输出：[0, 0, 1, 1, 2, 2]
+// 示例 2：
+
+// 输入：nums = [2, 0, 1]
+// 输出：[0, 1, 2]
+// 示例 3：
+
+// 输入：nums = [0]
+// 输出：[0]
+// 示例 4：
+
+// 输入：nums = [1]
+// 输出：[1]
+
+
+// 提示：
+
+// n == nums.length
+// 1 <= n <= 300
+// nums[i] 为 0、1 或 2
+
+
+// 进阶：
+
+// 你可以不使用代码库中的排序函数来解决这道题吗？
+// 你能想出一个仅使用常数空间的一趟扫描算法吗？
+
+// 来源：力扣（LeetCode）
+// 链接：https://leetcode-cn.com/problems/sort-colors
+// 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var sortColors = function (nums) {
+    let len = nums.length;
+    let sero = [];
+    let one = [];
+    let two = [];
+    for (let i = 0; i < len; i++) {
+        nums[i] === 0 ? sero.push(0) : nums[i] === 1 ? one.push(1) : two.push(2);
+    }
+    return [...sero, ...one, ...two]
+};
+//console.log(sortColors([2, 0, 2, 1, 1, 0])) [2,2,2,2,2,,2,2]
+var sortColors = function (nums) {
+    let len = nums.length;
+    let left = 0;
+    let right = len - 1;
+    while (left < right) {
+        while (nums[left] === 0 && left < right) {
+            left++;
+        }
+        while (nums[right] !== 0 && left < right) {
+            right--;
+        }
+        [nums[left], nums[right]] = [nums[right], nums[left]];
+    }
+    left = 0;
+    right = len - 1;
+    while (left < right) {
+        while (nums[left] <= 1 && left < right) {
+            left++;
+        }
+        while (nums[right] > 1 && left < right) {
+            right--;
+        }
+        [nums[left], nums[right]] = [nums[right], nums[left]];
+    }
+    console.log(nums)
+    return nums;
+};
+
+var sortColors = (nums) => {
+    var n0 = 0, n1 = 0;
+    for (var i = 0; i < nums.length; i++) {
+        var num = nums[i];
+        nums[i] = 2;
+        if (num < 2) {
+            nums[n1++] = 1;
+        }
+        if (num < 1) {
+            nums[n0++] = 0;
+        }
+    }
+    console.log(nums)
+}
+// sortColors([2, 0, 2, 1, 1, 0])
+
+
+
+// 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi]。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
+
+
+
+// 示例 1：
+
+// 输入：intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]  [[1,5],[2,20],[8,10],[15,18]]
+// 输出：[[1, 6], [8, 10], [15, 18]]
+// 解释：区间[1, 3] 和[2, 6] 重叠, 将它们合并为[1, 6].
+//     示例 2：
+
+// 输入：intervals = [[1, 4], [4, 5]]
+// 输出：[[1, 5]]
+// 解释：区间[1, 4] 和[4, 5] 可被视为重叠区间。
+
+var merge = function (intervals) {
+    //二维数组排序，第一个数小的在前面
+    let res = [];
+    let len = intervals.length;
+    let start = 0;
+    if (len === 1) {
+        return intervals;
+    }
+    //console.log(intervals.sort((a, b) => a[0] - b[0]))
+    intervals.sort((a, b) => a[0] - b[0]);
+    for (let i = 0; i < len - 1; i++) {
+        let max = intervals[i][1];
+        while (i < len - 1 && intervals[i + 1][0] <= max) {//有交集
+            max = Math.max(max, intervals[i + 1][1]);//取交集的最大值，和后面的继续比较
+            i++;
+        }
+        res.push([intervals[start][0], max]);
+        //console.log(res);
+        start = i + 1;
+    }
+    // 判断最有一个数是否需要加上
+    if (res[res.length - 1][1] < intervals[len - 1][0]) {
+        res.push(intervals[len - 1]);
+    }
+    //console.log(res);
+    return res;
+};
+console.log(merge([[2, 3], [4, 5], [6, 7], [8, 9], [1, 10]]));
